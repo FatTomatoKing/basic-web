@@ -1,15 +1,11 @@
-<script setup>
+<script setup lang="ts">
+import SvgIcon from '@/components/SvgIcon/index.vue'
 </script>
 
 <template>
-  <nav class="nav-menu">
-    <router-link to="/login" class="nav-item">
-      登陆
-    </router-link>
-
-  </nav>
-
-  <router-view></router-view>
+  <div>
+    <SvgIcon icon-name="phone" color="red" width="490px"></SvgIcon>
+  </div>
 </template>
 
 <style scoped>

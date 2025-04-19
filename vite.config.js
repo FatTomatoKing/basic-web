@@ -13,10 +13,10 @@ export default defineConfig({
     vueDevTools(),
     // 引入矢量图标库
     createSvgIconsPlugin({
-      // Specify the icon folder to be cached
+      // Specify the icons folder to be cached
       iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
       // Specify symbolId format
-      symbolId: 'icon-[dir]-[name]',
+      symbolId: 'icons-[name]',
     }),
   ],
   resolve: {
