@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import path from 'path'
+import {resolve} from "node:path";
 
 
 // 导出Vite配置，使用函数形式可以访问环境变量和命令行参数
@@ -27,9 +28,12 @@ export default defineConfig(({ mode }) => {
     const proxyConfig = {}
     try {
       const proxy = JSON.parse(VITE_PROXY || '[]')
-      proxy.forEach(([prefix, target]) => {
-        // 添加代理配置
-        proxyConfig[prefix] = {
+      proxy.forEach(([prefix, target]: [string, string]) => {
+        // 使用类型断言确保 proxyConfig 可以使用字符串索引
+        (proxyConfig as Record<string, {
+          target: string;
+          changeOrigin: boolean;
+        }>)[prefix] = {
           target,
           changeOrigin: true
         }
@@ -57,10 +61,12 @@ export default defineConfig(({ mode }) => {
     },
     // 路径解析配置
     resolve: {
-      // 设置路径别名
-      alias: {
-        '@': path.resolve(__dirname, 'src')
-      },
+      alias: [
+        {
+          find: /\@\//,
+          replacement: `${pathResolve('src')}/`,
+        }
+      ]
     },
     // 插件配置
     plugins: [
@@ -89,3 +95,6 @@ export default defineConfig(({ mode }) => {
     }
   }
 })
+function pathResolve(dir: string) {
+  return resolve(process.cwd(), '.', dir)
+}

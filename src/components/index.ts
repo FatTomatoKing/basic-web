@@ -1,6 +1,5 @@
 
 // 没懂这里为啥老提示找不到
-// @ts-ignore
 import SvgIcon from './SvgIcon/index.vue';
 import type { App, Component } from 'vue';
 

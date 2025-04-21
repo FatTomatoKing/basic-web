@@ -3,9 +3,9 @@
 </script>
 
 <template>
-    <div>
-      这是一个登陆页面
-    </div>
+  <div>
+    我是登陆路由
+  </div>
 </template>
 
 <style scoped>
