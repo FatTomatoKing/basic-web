@@ -1,21 +1,41 @@
-export interface loginForm {
-    username: string,
-    password: string
-    code: number
+export class LoginForm {
+    public username: string
+    public password: string
+    public code: number
+
+    constructor(username: string, password: string, code: number) {
+        this.username = username
+        this.password = password
+        this.code = code
+    }
 }
 
-interface dataType {
+class dataType {
     token: string
+
+    constructor(token: string) {
+        this.token = token;
+    }
 }
 
-export interface loginResponseData {
-    code: number
-    data: dataType
+export class loginResponseData {
+    public code: number
+    public data: dataType
+
+    constructor(code: number, data: dataType) {
+        this.code = code;
+        this.data = data;
+    }
 }
 
-interface sysRole {
+class sysRole {
     roleId: number
     roleName: number
+
+    constructor(roleId: number, roleName: number) {
+        this.roleId = roleId;
+        this.roleName = roleName;
+    }
 }
 
 interface user {
@@ -53,7 +73,12 @@ interface user {
 }
 
 
-export interface userResponseData {
+export class userResponseData {
     code: number
     data: user
+
+    constructor(code: number, data: user) {
+        this.code = code
+        this.data = data
+    }
 }
