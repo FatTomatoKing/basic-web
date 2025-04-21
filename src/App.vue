@@ -3,7 +3,7 @@ import {onMounted} from "vue";
 import {reqLogin} from "@/api/user";
 
 onMounted(() => {
-  let loginResponseDataPromise = reqLogin({username: 'admin', password: 'admin123', code: 123});
+  let loginResponseDataPromise = reqLogin({username: 'admin', password: 'admin', code: 123});
   console.log(loginResponseDataPromise)
 })
 
