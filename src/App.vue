@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import SvgIcon from '@/components/SvgIcon/index.vue'
+import {onMounted} from "vue";
+import {reqLogin} from "@/api/user";
+
+onMounted(() => {
+  let loginResponseDataPromise = reqLogin({username: 'admin', password: 'admin123', code: 123});
+  console.log(loginResponseDataPromise)
+})
+
 </script>
 
 <template>
-  <div>
-    <SvgIcon icon-name="phone" color="red" width="490px"></SvgIcon>
-  </div>
+
 </template>
 
 <style scoped>
