@@ -1,14 +1,9 @@
-import { resolve } from 'node:path'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import path from 'path'
 
-// 定义路径解析函数，简化项目中的路径引用
-function pathResolve(dir) {
-  return resolve(process.cwd(), '.', dir)
-}
 
 // 导出Vite配置，使用函数形式可以访问环境变量和命令行参数
 export default defineConfig(({ mode }) => {
@@ -36,8 +31,7 @@ export default defineConfig(({ mode }) => {
         // 添加代理配置
         proxyConfig[prefix] = {
           target,
-          changeOrigin: true,
-          rewrite: (path) => path
+          changeOrigin: true
         }
       })
     } catch (error) {
