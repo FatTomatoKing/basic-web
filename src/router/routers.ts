@@ -16,7 +16,6 @@ export const constantRoute = [
         name: '404',
         component: () => import('@/views/404/index.vue')
     },
-    ,
     {
         // 登陆成功展示数据的路由
         path: '/:pathMatch(.*)*',
