@@ -1,19 +1,14 @@
 
 // 没懂这里为啥老提示找不到
-// @ts-expect-error - Module resolution issue will be fixed later
-import SvgIcon from '@/components/SvgIcon/index.vue'
+// @ts-ignore
+import SvgIcon from './SvgIcon/index.vue';
+import type { App, Component } from 'vue';
 
-//全局对象
-const allPlugins: any = { SvgIcon }
-//对外暴露插件对象
+const components: { [name: string]: Component } = { SvgIcon };
 export default {
-    //务必叫做install方法
-    install(app: any) {
-        //注册项目全部的全局组件
-        Object.keys(allPlugins).forEach((key) => {
-            //注册为全局组件
-            app.component(key, allPlugins[key])
+    install(app: App) {
+        Object.keys(components).forEach((key: string) => {
+            app.component(key, components[key]);
         })
-
     }
 }
