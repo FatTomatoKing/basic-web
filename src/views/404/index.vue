@@ -4,7 +4,7 @@
 
 <template>
   <div>
-    <router-view></router-view>
+    我是404路由
   </div>
 </template>
 

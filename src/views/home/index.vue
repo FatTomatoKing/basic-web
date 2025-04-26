@@ -3,9 +3,9 @@
 </script>
 
 <template>
-  <div>
-    <router-view></router-view>
-  </div>
+<div>
+  我是首页路由
+</div>
 </template>
 
 <style scoped>
