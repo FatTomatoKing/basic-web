@@ -61,12 +61,17 @@ export default defineConfig(({ mode }) => {
     },
     // 路径解析配置
     resolve: {
-      alias: [
-        {
-          find: /\@\//,
-          replacement: `${pathResolve('src')}/`,
-        }
-      ]
+      alias: {
+        '@': path.resolve('./src')
+      }
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          javascriptEnabled: true,
+          additionalData: '@use "@/styles/variable.scss" as *;',
+        },
+      },
     },
     // 插件配置
     plugins: [
@@ -82,6 +87,7 @@ export default defineConfig(({ mode }) => {
         symbolId: 'icons-[name]',
       }),
     ],
+
     // 构建配置
     build: {
       // 设置构建目标为最新的ECMAScript标准
