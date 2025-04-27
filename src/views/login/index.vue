@@ -1,10 +1,10 @@
 <template>
   <div class="login-container">
-    <el-row style="display: flex; flex-direction: row;">
-      <el-col :span="12" :xs="0" class="left-side">
+    <el-row >
+      <el-col :span="12" :xs="0" >
         左侧内容
       </el-col>
-      <el-col :span="12" :xs="24" class="right-side">
+      <el-col :span="12" :xs="24" >
         右侧内容
       </el-col>
     </el-row>
@@ -19,12 +19,9 @@
   background-size: cover;
 }
 
-.left-side, .right-side {
-  height: 100%;
-  width: 100%;
-}
+
 </style>
 
 <script setup>
-
+import 'element-plus/dist/index.css'
 </script>
