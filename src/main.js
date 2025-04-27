@@ -8,6 +8,7 @@ import components from "@/components/index.js";
 
 import "@/styles/index.scss";
 import 'virtual:svg-icons-register'
+import 'element-plus/dist/index.css'
 
 var app = createApp(App);
 
