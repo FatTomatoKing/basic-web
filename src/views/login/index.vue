@@ -13,6 +13,7 @@
   height: 100vh;
   background: url("@/assets/images/background.jpg") no-repeat;
   background-size: cover;
+  color: $color;
 }
 
 </style>
