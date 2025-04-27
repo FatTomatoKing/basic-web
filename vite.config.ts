@@ -62,7 +62,7 @@ export default defineConfig(({ mode }) => {
     // 路径解析配置
     resolve: {
       alias: {
-        '@': path.resolve('./src')
+        "@": path.resolve("./src") // 相对路径别名配置，使用 @ 代替 src
       }
     },
     css: {
@@ -87,7 +87,6 @@ export default defineConfig(({ mode }) => {
         symbolId: 'icons-[name]',
       }),
     ],
-
     // 构建配置
     build: {
       // 设置构建目标为最新的ECMAScript标准
