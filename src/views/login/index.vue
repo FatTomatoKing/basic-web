@@ -1,21 +1,25 @@
 <template>
-  <div class="login_container">
-    <el-row>
-      <el-col :span="12" :xs="0">左</el-col>
-      <el-col :span="12" :xs="24">右</el-col>
+  <div class="login-container">
+    <el-row style="display: flex; flex-direction: row;">
+      <el-col :span="12" style="height: 100%; width: 100%">
+        左侧内容
+      </el-col>
+      <el-col :span="12" style="height: 100%; width: 100%">
+        右侧内容
+      </el-col>
     </el-row>
   </div>
 </template>
 
-<style scoped lang="scss">
-.login_container {
+<style scoped>
+.login-container {
   width: 100%;
   height: 100vh;
   background: url("@/assets/images/background.jpg") no-repeat;
   background-size: cover;
-  color: $color;
 }
-
 </style>
-<script setup lang="ts">
+
+<script setup>
+
 </script>
