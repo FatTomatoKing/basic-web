@@ -10,25 +10,9 @@ export class LoginForm {
     }
 }
 
-class dataType {
-    token: string
 
-    constructor(token: string) {
-        this.token = token;
-    }
-}
 
-export class loginResponseData {
-    public code: number
-    public data: dataType
-
-    constructor(code: number, data: dataType) {
-        this.code = code;
-        this.data = data;
-    }
-}
-
-class sysRole {
+class SysRole {
     roleId: number
     roleName: number
 
@@ -38,7 +22,7 @@ class sysRole {
     }
 }
 
-interface user {
+interface User {
     id: number,
     username: string,
     nickname: string,
@@ -64,7 +48,7 @@ interface user {
 
     salt: string,
     desc: string,
-    roles: sysRole[],
+    roles: SysRole[],
     roleIds: number[],
     postIds: number[],
     buttons: string[],
@@ -73,11 +57,11 @@ interface user {
 }
 
 
-export class userResponseData {
+export class UserResponseData {
     code: number
-    data: user
+    data: User
 
-    constructor(code: number, data: user) {
+    constructor(code: number, data: User) {
         this.code = code
         this.data = data
     }
