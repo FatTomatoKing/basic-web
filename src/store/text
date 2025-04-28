@@ -1,0 +1,320 @@
+已知注册3.5亿登陆15亿，充值3亿，提现2.5 亿， 时间是2022年一月分开始，登陆充值提现的gaid都是来源于注册，注册gaid重复率平均数是33，登陆是1200多，充值是47提现是21，怎样使用mysql的lodatainfile最快的mock出来这些id关系，只用id关系在2024年12月20号左右达到以上的重复率就可以的id关系，充值登陆提现要求一百天以内注册的百分之八十，一百天之外的百分之二十
+import java.io.*;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
+public class DataGenerator {
+    // 关键参数
+    private static final long TOTAL_USERS = 350_000_000;       // 3.5亿注册用户
+    private static final long TOTAL_LOGINS = 1_500_000_000L;   // 15亿登录记录
+    private static final long TOTAL_DEPOSITS = 300_000_000;    // 3亿充值记录
+    private static final long TOTAL_WITHDRAWALS = 250_000_000; // 2.5亿提现记录
+
+    // 重复率参数
+    private static final int GAID_DUPLICATE_REG = 33;        // 注册GAID平均重复33次
+    private static final int GAID_DUPLICATE_LOGIN = 1200;    // 登录GAID平均重复1200次
+    private static final int GAID_DUPLICATE_DEPOSIT = 47;    // 充值GAID平均重复47次
+    private static final int GAID_DUPLICATE_WITHDRAWAL = 21; // 提现GAID平均重复21次
+
+    // 时间分布参数
+    private static final LocalDate START_DATE = LocalDate.of(2022, 1, 1);
+    private static final LocalDate END_DATE = LocalDate.of(2024, 12, 20);
+    private static final int RECENT_DAYS = 100;
+
+    // 文件生成参数
+    private static final int BATCH_SIZE = 1_000_000;
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    // 内存优化参数
+    private static final int BUFFER_SIZE = 8 * 1024 * 1024; // 8MB文件缓冲区
+
+    // 随机数生成器
+    private static final Random random = new Random();
+
+    public static void main(String[] args) throws Exception {
+        System.out.println("Starting data generation...");
+        long startTime = System.currentTimeMillis();
+
+        // 计算需要的唯一GAID数量
+        int uniqueGaidsForReg = calculateUniqueGaids(TOTAL_USERS, GAID_DUPLICATE_REG);
+        System.out.println("Generating " + uniqueGaidsForReg + " unique GAIDs for registration...");
+
+        // 生成用户-GAID映射
+        System.out.println("Generating user-GAID mapping...");
+        Map<Long, String> userToGaid = generateUserGaidMapping(uniqueGaidsForReg);
+
+        // 多线程生成数据
+        ExecutorService executor = Executors.newFixedThreadPool(4);
+
+        // 先生成注册数据
+        System.out.println("Generating registration data...");
+        Future<?> regFuture = executor.submit(() -> {
+            try {
+                generateRegistrationData("registrations.csv", userToGaid);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        regFuture.get(); // 等待注册数据生成完成
+
+        // 并行生成其他活动数据
+        List<Future<?>> futures = new ArrayList<>();
+
+        futures.add(executor.submit(() -> {
+            try {
+                generateActivityData("logins.csv", TOTAL_LOGINS, GAID_DUPLICATE_LOGIN, "login", userToGaid);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }));
+
+        futures.add(executor.submit(() -> {
+            try {
+                generateActivityData("deposits.csv", TOTAL_DEPOSITS, GAID_DUPLICATE_DEPOSIT, "deposit", userToGaid);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }));
+
+        futures.add(executor.submit(() -> {
+            try {
+                generateActivityData("withdrawals.csv", TOTAL_WITHDRAWALS, GAID_DUPLICATE_WITHDRAWAL, "withdrawal", userToGaid);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }));
+
+        // 等待所有任务完成
+        for (Future<?> future : futures) {
+            future.get();
+        }
+
+        executor.shutdown();
+
+        long totalTime = (System.currentTimeMillis() - startTime) / 1000;
+        System.out.println("Data generation complete! Total time: " + totalTime + " seconds");
+
+        // 导入数据到MySQL
+        System.out.println("Do you want to import data to MySQL? (y/n)");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String response = reader.readLine();
+
+        if (response.equalsIgnoreCase("y")) {
+            importDataToMySQL();
+        }
+    }
+
+    /**
+     * 计算所需的实际GAID数量
+     */
+    private static int calculateUniqueGaids(long totalRecords, int avgDuplication) {
+        return (int) Math.ceil((double) totalRecords / avgDuplication);
+    }
+
+    /**
+     * 生成随机UUID (GAID)
+     */
+    private static String generateUUID() {
+        return UUID.randomUUID().toString();
+    }
+
+    /**
+     * 生成日期，满足80%在最近100天内，20%在更早日期
+     */
+    private static LocalDate generateDate(boolean recentBias) {
+        LocalDate cutoffDate = END_DATE.minusDays(RECENT_DAYS);
+        long totalDays;
+
+        if (recentBias && random.nextDouble() < 0.8) {
+            // 80%的数据在最近100天内
+            totalDays = ChronoUnit.DAYS.between(cutoffDate, END_DATE);
+            return cutoffDate.plusDays(random.nextInt((int) totalDays));
+        } else {
+            // 20%的数据在更早日期
+            totalDays = ChronoUnit.DAYS.between(START_DATE, cutoffDate);
+            return START_DATE.plusDays(random.nextInt((int) totalDays));
+        }
+    }
+
+    /**
+     * 生成用户ID到GAID的映射关系
+     */
+    private static Map<Long, String> generateUserGaidMapping(int uniqueGaidsNeeded) {
+        // 生成GAID池
+        List<String> gaidPool = new ArrayList<>(uniqueGaidsNeeded);
+        for (int i = 0; i < uniqueGaidsNeeded; i++) {
+            gaidPool.add(generateUUID());
+            if (i % 1_000_000 == 0) {
+                System.out.println("Generated " + i + " GAIDs");
+            }
+        }
+
+        // 为每个用户分配GAID - 使用高效的数据结构
+        System.out.println("Assigning GAIDs to users...");
+        Map<Long, String> userToGaid = new HashMap<>((int)(TOTAL_USERS * 1.25)); // 预分配足够的空间
+
+        for (long userId = 1; userId <= TOTAL_USERS; userId++) {
+            int randomIndex = random.nextInt(gaidPool.size());
+            userToGaid.put(userId, gaidPool.get(randomIndex));
+
+            if (userId % 10_000_000 == 0) {
+                System.out.println("Assigned GAIDs to " + userId + " users");
+            }
+        }
+
+        return userToGaid;
+    }
+
+    /**
+     * 生成注册数据文件
+     */
+    private static void generateRegistrationData(String filename, Map<Long, String> userToGaid) throws IOException {
+        System.out.println("Writing registration data to " + filename);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename), BUFFER_SIZE)) {
+            for (long userId = 1; userId <= TOTAL_USERS; userId++) {
+                String gaid = userToGaid.get(userId);
+                LocalDate regDate = generateDate(false); // 注册日期分布更均匀
+
+                writer.write(userId + "," + gaid + "," + regDate.format(DATE_FORMAT) + "\n");
+
+                if (userId % BATCH_SIZE == 0) {
+                    System.out.println("Generated " + userId + " registration records");
+                }
+            }
+        }
+    }
+
+    /**
+     * 生成活动记录（登录/充值/提现）
+     */
+    private static void generateActivityData(String filename, long totalRecords, int duplicateRate,
+                                             String activityType, Map<Long, String> userToGaid) throws IOException {
+        System.out.println("Writing " + activityType + " data to " + filename);
+
+        // 计算需要多少个用户
+        int usersNeeded = (int) Math.min(TOTAL_USERS, Math.ceil((double) totalRecords / duplicateRate));
+        System.out.println("Selecting " + usersNeeded + " users for " + activityType + " records");
+
+        // 随机选择用户ID
+        List<Long> allUserIds = new ArrayList<>(userToGaid.keySet());
+        Collections.shuffle(allUserIds);
+        List<Long> selectedUserIds = allUserIds.subList(0, usersNeeded);
+
+        // 创建高斯分布模拟器
+        GaussianDistribution gaussianDist = new GaussianDistribution(duplicateRate, duplicateRate * 0.2);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename), BUFFER_SIZE)) {
+            long recordsGenerated = 0;
+
+            for (Long userId : selectedUserIds) {
+                String gaid = userToGaid.get(userId);
+
+                // 计算此用户需要生成多少条记录
+                int recordsPerUser = Math.max(1, (int) Math.round(gaussianDist.nextGaussian()));
+                recordsPerUser = (int) Math.min(recordsPerUser, totalRecords - recordsGenerated);
+
+                if (recordsPerUser <= 0) continue;
+
+                for (int i = 0; i < recordsPerUser; i++) {
+                    // 活动日期多在注册后100天内
+                    LocalDate activityDate = generateDate(true);
+                    writer.write(userId + "," + gaid + "," + activityDate.format(DATE_FORMAT) + "\n");
+
+                    recordsGenerated++;
+                    if (recordsGenerated % BATCH_SIZE == 0) {
+                        System.out.println("Generated " + recordsGenerated + " " + activityType + " records");
+                    }
+
+                    if (recordsGenerated >= totalRecords) break;
+                }
+
+                if (recordsGenerated >= totalRecords) break;
+            }
+
+            System.out.println("Completed generating " + recordsGenerated + " " + activityType + " records");
+        }
+    }
+
+    /**
+     * 导入数据到MySQL
+     */
+    private static void importDataToMySQL() {
+        // MySQL连接配置
+        String jdbcURL = "jdbc:mysql://localhost:3306/testdb?rewriteBatchedStatements=true";
+        String username = "root";
+        String password = "password";
+
+        try (Connection conn = DriverManager.getConnection(jdbcURL, username, password)) {
+            // 关闭自动提交和外键约束
+            conn.setAutoCommit(false);
+            try (Statement stmt = conn.createStatement()) {
+                stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
+                stmt.execute("SET UNIQUE_CHECKS = 0");
+
+                // 导入注册数据
+                importFile(conn, "registrations.csv", "user_registrations", "user_id,gaid,reg_date");
+
+                // 导入其他活动数据
+                importFile(conn, "logins.csv", "user_logins", "user_id,gaid,login_date");
+                importFile(conn, "deposits.csv", "user_deposits", "user_id,gaid,deposit_date");
+                importFile(conn, "withdrawals.csv", "user_withdrawals", "user_id,gaid,withdrawal_date");
+
+                // 恢复约束并提交
+                stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
+                stmt.execute("SET UNIQUE_CHECKS = 1");
+                conn.commit();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 使用LOAD DATA INFILE导入单个文件
+     */
+    private static void importFile(Connection conn, String filename, String tableName, String columns)
+            throws SQLException {
+        // 获取完整文件路径
+        File file = new File(filename);
+        String fullPath = file.getAbsolutePath().replace("\\", "/");
+
+        String sql = "LOAD DATA INFILE '" + fullPath + "' INTO TABLE " + tableName +
+                     " FIELDS TERMINATED BY ',' LINES TERMINATED BY '\\n' (" + columns + ")";
+
+        System.out.println("Importing " + filename + " to " + tableName + "...");
+        System.out.println("SQL: " + sql);
+
+        try (Statement stmt = conn.createStatement()) {
+            long startTime = System.currentTimeMillis();
+            int rowsAffected = stmt.executeUpdate(sql);
+            long totalTime = (System.currentTimeMillis() - startTime) / 1000;
+
+            System.out.println("Imported " + rowsAffected + " rows into " + tableName +
+                              " in " + totalTime + " seconds");
+        }
+    }
+
+    /**
+     * 高斯分布模拟器
+     */
+    private static class GaussianDistribution {
+        private final double mean;
+        private final double stdDev;
+
+        public GaussianDistribution(double mean, double stdDev) {
+            this.mean = mean;
+            this.stdDev = stdDev;
+        }
+
+        public double nextGaussian() {
+            return random.nextGaussian() * stdDev + mean;
+        }
+    }
+}
