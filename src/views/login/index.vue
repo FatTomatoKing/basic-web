@@ -28,15 +28,22 @@ import {User, Lock} from '@element-plus/icons-vue'
 //这里不使用｛｝的原因是使用了默认暴露
 import useUserStore from '@/store/modules/user.js'
 import {reactive} from "vue";
+import {useRouter} from "vue-router";
+
 
 //收集账号与表单密码的数据
 let loginUserParam = reactive({username: "admin", password: "admin", code :'10086'})
 
 let userStore = useUserStore();
-
-function login() {
+let $router = useRouter();
+async function login() {
   console.log("点击了提交按钮")
-  userStore.userLogin(loginUserParam)
+  try {
+    await userStore.userLogin(loginUserParam);
+    $router.push("/");
+  } catch (exception) {
+
+  }
 }
 
 
