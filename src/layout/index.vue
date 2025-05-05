@@ -1,11 +1,19 @@
 <script setup lang="ts">
     import Logo from '@/layout/logo/index.vue'
+    import Menu from '@/layout/menu/index.vue'
 </script>
 
 <template>
     <div class="layout_container">
       <div class="layout_slider">
         <Logo></Logo>
+        <el-scrollbar class="scroll_bar" >
+<!--            <p v-for="item in 100" :key="item" class="scrollbar-demo-item">{{ item }}</p>-->
+
+          <el-menu background-color="#001529" text-color="white">
+            <Menu></Menu>
+          </el-menu>
+        </el-scrollbar>
       </div>
       <div class="layout_tabbar">456</div>
       <div class="layout_main">
@@ -22,6 +30,10 @@
       width: $base-menu-width;
       height: 100vh;
       background:  $base-menu-background;
+      .scroll_bar{
+        width: $base-menu-width;
+        height: calc(100vh - $base-logo-height);
+      }
     }
     .layout_tabbar{
       width: calc(100% - $base-menu-width);

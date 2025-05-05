@@ -12,7 +12,7 @@ import setting  from "@/setting";
 <style scoped lang="scss">
   .logo{
     width: 100%;
-    height: 50px;
+    height: $base-logo-height;
     color: white;
     display: flex;
     align-items: center;
@@ -23,7 +23,7 @@ import setting  from "@/setting";
     }
     p{
       font-size: $base-logo-title-size;
-      margin-left: 50px;
+      margin-left: 30px;
     }
   }
 
