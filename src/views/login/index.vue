@@ -80,7 +80,7 @@ async function login() {
 
 let usernameValidator = (rule:any,value:any,callback:any)=>{
   if (value.length > 5){
-      callback(true)
+      callback()
   } else(
       callback(new Error("账号长度必须大于5"))
   )
@@ -88,7 +88,7 @@ let usernameValidator = (rule:any,value:any,callback:any)=>{
 
 let passwordValidator = (rule:any,value:any,callback:any)=>{
   if (value.length > 6){
-    callback(true)
+    callback()
   } else(
       callback(new Error("密码长度必须大于6"))
   )

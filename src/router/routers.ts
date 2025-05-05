@@ -8,7 +8,7 @@ export const constantRoute = [
         // 登陆成功展示数据的路由
         path: '/',
         name: 'layout',
-        component: () => import('@/views/home/index.vue')
+        component: () => import('@/layout/index.vue')
     },
     {
         // 登陆成功展示数据的路由
