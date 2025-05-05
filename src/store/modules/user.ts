@@ -15,13 +15,13 @@ let useUserStore = defineStore("User", {
     actions: {
         async userLogin(loginParam: LoginForm) {
             console.log(loginParam)
-            let loginResponse = await reqLogin(loginParam);
-            if (loginResponse.isSuccess()) {
-                this.token = loginResponse.data
-                SET_TOKEN(loginResponse.data)
+            //let loginResponse = await reqLogin(loginParam);
+            if (true) {
+                this.token = "data"
+                SET_TOKEN(this.token)
                 return "Ok"
             } else {
-                return Promise.reject(loginResponse.message)
+                return Promise.reject("kk")
             }
         }
     },

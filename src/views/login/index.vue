@@ -1,20 +1,20 @@
 <template>
-  <div class="login-container">
+  <div class="login-container" >
     <el-row>
       <el-col :span="12" :xs="0">
       </el-col>
       <el-col :span="12" :xs="24">
-        <el-form class="login-form">
+        <el-form class="login-form" :model="loginUserParam" :rules="loginUserParamCheckRules" ref="validateResult">
           <h1>Hello</h1>
           <h2>欢迎来到天启世界</h2>
-          <el-form-item>
+          <el-form-item prop = "username">
             <el-input :prefix-icon="User" v-model="loginUserParam.username"></el-input>
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop="password">
             <el-input type="password" :prefix-icon="Lock" v-model="loginUserParam.password" show-password></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button class="login-form-button" type="primary" size="default" @click="login">Login</el-button>
+            <el-button :loading="submitState" class="login-form-button" type="primary" size="default" @click="login">Login</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -23,28 +23,71 @@
 </template>
 
 
-<script setup>
+<script setup lang="ts">
 import {User, Lock} from '@element-plus/icons-vue'
 //这里不使用｛｝的原因是使用了默认暴露
 import useUserStore from '@/store/modules/user.js'
-import {reactive} from "vue";
+import {ref,reactive} from "vue";
 import {useRouter} from "vue-router";
+import {ElNotification} from "element-plus";
+import {getHour} from "@/utils/time.js";
 
 
 //收集账号与表单密码的数据
 let loginUserParam = reactive({username: "admin", password: "admin", code :'10086'})
+
+let submitState = ref(false);
+
+
+let validateResult = ref()
 
 let userStore = useUserStore();
 let $router = useRouter();
 async function login() {
   console.log("点击了提交按钮")
   try {
+    let validate = validateResult.value.validate();
+    console.log(validate)
+    await validate
+    submitState.value = true
     await userStore.userLogin(loginUserParam);
+    submitState.value = false
     $router.push("/");
-  } catch (exception) {
+    ElNotification({
+      type: "success",
+      message: `Hi, ${getHour()}`
+    })
 
+  } catch (error) {
+    submitState.value = false
+    console.error('验证错误:', error)
+    let msg = ""
+    if (error && typeof error === 'object') {
+      msg = Object.values(error)
+          .map(arr => arr[0]?.message)
+          .filter(Boolean)
+          .join('或')
+    }else {
+      msg = (error as Error).message
+    }
+
+    ElNotification({
+      type: "error",
+      message: msg,
+    })
   }
 }
+
+const loginUserParamCheckRules ={
+  username: [
+    { required: true, min: 4, max:20, message: '用户名长度至少4-20位', trigger: 'change' },
+  ],
+  password: [
+      { required: true, min: 8, max:20, message: '密码长度至少8-20位', trigger: 'change' },
+  ]
+}
+
+
 
 
 </script>
