@@ -1,10 +1,12 @@
 <script setup lang="ts">
-
+    import Logo from '@/layout/logo/index.vue'
 </script>
 
 <template>
     <div class="layout_container">
-      <div class="layout_slider">123</div>
+      <div class="layout_slider">
+        <Logo></Logo>
+      </div>
       <div class="layout_tabbar">456</div>
       <div class="layout_main">
         <p style="background: red; background-color: red; height: 10000px">我是一个段落</p>
