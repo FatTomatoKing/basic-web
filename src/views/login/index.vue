@@ -78,12 +78,31 @@ async function login() {
   }
 }
 
+let usernameValidator = (rule:any,value:any,callback:any)=>{
+  if (value.length > 5){
+      callback(true)
+  } else(
+      callback(new Error("账号长度必须大于5"))
+  )
+}
+
+let passwordValidator = (rule:any,value:any,callback:any)=>{
+  if (value.length > 6){
+    callback(true)
+  } else(
+      callback(new Error("密码长度必须大于6"))
+  )
+}
+
 const loginUserParamCheckRules ={
   username: [
-    { required: true, min: 4, max:20, message: '用户名长度至少4-20位', trigger: 'change' },
+      // { required: true, min: 4, max:20, message: '用户名长度至少4-20位', trigger: 'change' },
+    {trigger: "blur", validator: usernameValidator},
+
   ],
   password: [
-      { required: true, min: 8, max:20, message: '密码长度至少8-20位', trigger: 'change' },
+      //{ required: true, min: 8, max:20, message: '密码长度至少8-20位', trigger: 'change' },
+    {trigger: "change", validator: passwordValidator},
   ]
 }
 
