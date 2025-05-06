@@ -1,6 +1,9 @@
 <script setup lang="ts">
     import Logo from '@/layout/logo/index.vue'
     import Menu from '@/layout/menu/index.vue'
+    import useUserStore from "@/store/modules/user";
+
+    let userStore = useUserStore();
 </script>
 
 <template>
