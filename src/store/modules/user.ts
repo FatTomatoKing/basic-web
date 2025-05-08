@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 
-import {reqLogin} from "@/api/user/index.ts"
+
 import {LoginForm} from "@/api/user/type.ts";
 import {UserState} from "@/store/modules/types/type";
 import {GET_TOKEN, SET_TOKEN} from "@/utils/token";

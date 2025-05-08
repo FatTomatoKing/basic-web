@@ -2,7 +2,6 @@
     import Logo from '@/layout/logo/index.vue'
     import Menu from '@/layout/menu/index.vue'
     import useUserStore from "@/store/modules/user";
-
     let userStore = useUserStore();
 </script>
 
@@ -11,10 +10,8 @@
       <div class="layout_slider">
         <Logo></Logo>
         <el-scrollbar class="scroll_bar" >
-<!--            <p v-for="item in 100" :key="item" class="scrollbar-demo-item">{{ item }}</p>-->
-
           <el-menu background-color="#001529" text-color="white">
-            <Menu></Menu>
+            <Menu :menuList="userStore.menuRoutes"></Menu>
           </el-menu>
         </el-scrollbar>
       </div>
