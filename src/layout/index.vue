@@ -33,6 +33,9 @@
       .scroll_bar{
         width: $base-menu-width;
         height: calc(100vh - $base-logo-height);
+        .el-menu{
+          border-right: none ;
+        }
       }
     }
     .layout_tabbar{
