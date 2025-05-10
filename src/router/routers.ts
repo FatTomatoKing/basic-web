@@ -6,6 +6,7 @@ export const constantRoute = [
         meta:{
             title: "登陆",
             hidden: true,
+            icon: "Promotion"
         }
     },
     {
@@ -15,7 +16,8 @@ export const constantRoute = [
         component: () => import('@/layout/index.vue'),
         meta:{
             title: "layout",
-            hidden: false
+            hidden: false,
+            icon: "Avatar"
         },
         children: [
             {
@@ -24,18 +26,10 @@ export const constantRoute = [
                 component: () => import('@/views/home/index.vue'),
                 meta:{
                     title: "首页",
-                    hidden: false
+                    hidden: false,
+                    icon: "HomeFilled"
                 },
-            },
-            {
-                path: '/ceshi',
-                name: 'ceshi',
-                component: () => import('@/views/home/index.vue'),
-                meta:{
-                    title: "测试",
-                    hidden: false
-                },
-            },
+            }
         ]
     },
     {
@@ -45,9 +39,9 @@ export const constantRoute = [
         component: () => import('@/views/404/index.vue'),
         meta:{
             title: "404",
-            hidden: true
+            hidden: true,
+            icon: "NotFound"
         }
-
     },
     {
         // 登陆成功展示数据的路由
@@ -56,7 +50,8 @@ export const constantRoute = [
         name: 'Any',
         meta: {
             title: '任意路由',
-            hidden: true
+            hidden: true,
+            icon: "WarnTriangleFilled"
         }
     }
 ]

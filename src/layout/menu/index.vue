@@ -1,7 +1,10 @@
 <script setup lang="ts" >
-
-
     defineProps(['menuList'])
+
+    const goRoute = (vc: any)=>{
+      console.log(vc.index)
+    }
+
 </script>
 
 <script lang="ts">
@@ -13,9 +16,11 @@
 <template>
   <template v-for="(item) in menuList" :key="item.path">
       <template v-if="!item.children">
-        <el-menu-item v-if="!item.meta.hidden" :index="item.path" :key="item.path">
+        <el-menu-item v-if="!item.meta.hidden" :index="item.path" :key="item.path" @click="goRoute">
           <template #title>
-            <span>标&ensp;</span>
+            <el-icon>
+              <component :is="item.meta.icon"></component>
+            </el-icon>
             <span>{{item.meta.title}}</span>
           </template>
         </el-menu-item>
@@ -24,7 +29,9 @@
       <template v-if="item.children && item.children.length == 1">
         <el-menu-item v-if="!item.children.meta.hidden" :index="item.children[0].path" :key="item.path"> >
           <template #title>
-            <span>标&ensp;</span>
+            <el-icon>
+              <component :is="item.children[0].meta.icon"></component>
+            </el-icon>
             <span>{{item.children[0].meta.title}}</span>
           </template>
         </el-menu-item>
@@ -33,6 +40,9 @@
 
       <el-sub-menu v-if="item.children && item.children.length>1" :index="item.path" :key="item.path">
         <template #title>
+          <el-icon>
+            <component :is="item.meta.icon"></component>
+          </el-icon>
           <span>{{item.meta.title}}</span>
         </template>
         <Menu :menuList="item.children"></Menu>
