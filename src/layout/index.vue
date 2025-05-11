@@ -17,7 +17,8 @@
       </div>
       <div class="layout_tabbar">456</div>
       <div class="layout_main">
-        <p style="background: red; background-color: red; height: 10000px">我是一个段落</p>
+<!--        <p style="background: red; background-color: red; height: 10000px">我是一个段落</p>-->
+        <router-view></router-view>
       </div>
     </div>
 </template>

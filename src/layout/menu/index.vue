@@ -1,8 +1,14 @@
 <script setup lang="ts" >
-    defineProps(['menuList'])
+    defineProps(['menuList']);
+
+    import {useRouter} from "vue-router"
+
+
+    let $router = useRouter()
 
     const goRoute = (vc: any)=>{
-      console.log(vc.index)
+      console.log(vc)
+      $router.push(vc.index)
     }
 
 </script>
@@ -27,7 +33,7 @@
       </template>
 
       <template v-if="item.children && item.children.length == 1">
-        <el-menu-item v-if="!item.children.meta.hidden" :index="item.children[0].path" :key="item.path"> >
+        <el-menu-item v-if="!item.children[0].meta.hidden" :index="item.children[0].path" :key="item.path">
           <template #title>
             <el-icon>
               <component :is="item.children[0].meta.icon"></component>
