@@ -4,8 +4,13 @@
     import useUserStore from "@/store/modules/user";
     // 引入vue 组件呢是这种不用加{}的，但是引入ts 中的一个属性或者函数是需要加{}的
     import Main from '@/layout/main/index.vue'
+    // useRoute 和 useRouter 有什么区别
+    import {useRoute} from "vue-router";
+
+
     let userStore = useUserStore();
 
+    let $route = useRoute();
 </script>
 
 <template>
@@ -13,7 +18,7 @@
       <div class="layout_slider">
         <Logo></Logo>
         <el-scrollbar class="scroll_bar" >
-          <el-menu background-color="#001529" text-color="white">
+          <el-menu :default-active="$route.path" background-color="#001529" text-color="white">
             <Menu :menuList="userStore.menuRoutes"></Menu>
           </el-menu>
         </el-scrollbar>
