@@ -2,7 +2,10 @@
     import Logo from '@/layout/logo/index.vue'
     import Menu from '@/layout/menu/index.vue'
     import useUserStore from "@/store/modules/user";
+    // 引入vue 组件呢是这种不用加{}的，但是引入ts 中的一个属性或者函数是需要加{}的
+    import Main from '@/layout/main/index.vue'
     let userStore = useUserStore();
+
 </script>
 
 <template>
@@ -17,8 +20,7 @@
       </div>
       <div class="layout_tabbar">456</div>
       <div class="layout_main">
-<!--        <p style="background: red; background-color: red; height: 10000px">我是一个段落</p>-->
-        <router-view></router-view>
+        <Main></Main>
       </div>
     </div>
 </template>

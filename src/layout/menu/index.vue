@@ -33,7 +33,7 @@
       </template>
 
       <template v-if="item.children && item.children.length == 1">
-        <el-menu-item v-if="!item.children[0].meta.hidden" :index="item.children[0].path" :key="item.path">
+        <el-menu-item v-if="!item.children[0].meta.hidden" :index="item.children[0].path" :key="item.path" @click="goRoute">
           <template #title>
             <el-icon>
               <component :is="item.children[0].meta.icon"></component>
@@ -44,7 +44,7 @@
       </template>
 
 
-      <el-sub-menu v-if="item.children && item.children.length>1" :index="item.path" :key="item.path">
+      <el-sub-menu v-if="item.children && item.children.length>1" :index="item.path" :key="item.path" @click="goRoute">
         <template #title>
           <el-icon>
             <component :is="item.meta.icon"></component>
