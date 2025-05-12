@@ -7,6 +7,8 @@
     // useRoute 和 useRouter 有什么区别
     import {useRoute} from "vue-router";
 
+    import Tabbar from  '@/layout/tabbar/index.vue'
+
 
     let userStore = useUserStore();
 
@@ -23,7 +25,9 @@
           </el-menu>
         </el-scrollbar>
       </div>
-      <div class="layout_tabbar">456</div>
+      <div class="layout_tabbar">
+        <Tabbar></Tabbar>
+      </div>
       <div class="layout_main">
         <Main></Main>
       </div>
@@ -49,7 +53,6 @@
     .layout_tabbar{
       width: calc(100% - $base-menu-width);
       height: $base-tabbar-height;
-      background: cyan;
       position: fixed;
       top: 0;
       left: $base-menu-width;
