@@ -54,8 +54,9 @@
       width: calc(100% - $base-menu-width);
       height: $base-tabbar-height;
       position: fixed;
-      top: 0;
+      top: 0px;
       left: $base-menu-width;
+
     }
     .layout_main{
       width: calc(100% - $base-menu-width);
