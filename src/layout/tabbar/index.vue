@@ -1,6 +1,12 @@
 <script setup lang="ts">
-  import Setting from "@/layout/tabbar/setting/index.vue";
-  import Breadcrumb from "@/layout/tabbar/breadcrumb/index.vue";
+import Setting from "@/layout/tabbar/setting/index.vue";
+import Breadcrumb from "@/layout/tabbar/breadcrumb/index.vue";
+</script>
+
+<script lang="ts">
+export default {
+  name: "Setting"
+}
 </script>
 
 <template>

@@ -2,6 +2,12 @@
 
 </script>
 
+<script lang="ts">
+ export default {
+   name : "Main"
+ }
+</script>
+
 <template>
 
   <router-view v-slot="{ Component }">
@@ -21,7 +27,6 @@
   transition: all .3s;
 }
 .fade-enter-to{
-
   opacity: 1;
   transform: scale(1);
 }

@@ -2,6 +2,12 @@
 import setting  from "@/setting";
 </script>
 
+<script lang="ts">
+ export default {
+   name : "Logo"
+ }
+</script>
+
 <template>
   <div class="logo">
     <img class="image" :src="setting.logo" alt="logo" v-if="setting.logoHidden">
@@ -16,7 +22,7 @@ import setting  from "@/setting";
     color: white;
     display: flex;
     align-items: center;
-    margin-left: 20px;
+    margin-left: 10px;
     .image{
       width: 40px;
       height: 40px;

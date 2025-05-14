@@ -2,21 +2,28 @@
     import Logo from '@/layout/logo/index.vue'
     import Menu from '@/layout/menu/index.vue'
     import useUserStore from "@/store/modules/user";
+    import useSetting from "@/store/modules/setting.ts";
     // 引入vue 组件呢是这种不用加{}的，但是引入ts 中的一个属性或者函数是需要加{}的
     import Main from '@/layout/main/index.vue'
     // useRoute 和 useRouter 有什么区别
     import {useRoute} from "vue-router";
-
     import Tabbar from  '@/layout/tabbar/index.vue'
 
     let userStore = useUserStore();
-
     let $route = useRoute();
+    const settingStore = useSetting()
+
+</script>
+
+<script lang="ts">
+export default {
+  name: "Layout"
+}
 </script>
 
 <template>
     <div class="layout_container">
-      <div class="layout_slider">
+      <div class="layout_slider" :class="settingStore.fold ? 'foldState' : ''">
         <Logo></Logo>
         <el-scrollbar class="scroll_bar" >
           <el-menu :default-active="$route.path" background-color="#001529" text-color="white">
@@ -24,10 +31,10 @@
           </el-menu>
         </el-scrollbar>
       </div>
-      <div class="layout_tabbar">
+      <div class="layout_tabbar" :class="settingStore.fold ? 'foldState' : ''">
         <Tabbar></Tabbar>
       </div>
-      <div class="layout_main">
+      <div class="layout_main" :class="settingStore.fold ? 'foldState' : ''">
         <Main></Main>
       </div>
     </div>
@@ -42,11 +49,13 @@
       height: 100vh;
       background:  $base-menu-background;
       .scroll_bar{
-        width: $base-menu-width;
         height: calc(100vh - $base-logo-height);
         .el-menu{
           border-right: none ;
         }
+      }
+      &.foldState {
+        width: $base-menu-fold-width;
       }
     }
     .layout_tabbar{
@@ -56,6 +65,10 @@
       top: 0px;
       left: $base-menu-width;
 
+      &.foldState {
+        width: calc(100% - $base-menu-fold-width);
+        left: $base-menu-fold-width;
+      }
     }
     .layout_main{
       width: calc(100% - $base-menu-width);
@@ -66,6 +79,10 @@
       background: white;
       // 处理右下角div内容自适应
       overflow: auto;
+      &.foldState {
+        width: calc(100% - $base-menu-fold-width);
+        left: $base-menu-fold-width;
+      }
     }
   }
 </style>
