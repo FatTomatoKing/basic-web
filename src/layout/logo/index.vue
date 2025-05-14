@@ -22,7 +22,7 @@ import setting  from "@/setting";
     color: white;
     display: flex;
     align-items: center;
-    margin-left: 10px;
+    padding: 10px;
     .image{
       width: 40px;
       height: 40px;
