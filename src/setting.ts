@@ -1,7 +1,6 @@
 
 export default {
-    title : '天启世界',
+    title : '豪宅基地',
     logo: '/logo4.png',
     logoHidden: true,
-
 }

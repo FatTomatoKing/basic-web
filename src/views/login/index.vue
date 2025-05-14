@@ -6,7 +6,7 @@
       <el-col :span="12" :xs="24">
         <el-form class="login-form" :model="loginUserParam" :rules="loginUserParamCheckRules" ref="validateResult">
           <h1>Hello</h1>
-          <h2>欢迎来到天启世界</h2>
+          <h2>欢迎来到豪宅基地</h2>
           <el-form-item prop = "username">
             <el-input :prefix-icon="User" v-model="loginUserParam.username"></el-input>
           </el-form-item>
@@ -34,7 +34,7 @@ import {getHour} from "@/utils/time.js";
 
 
 //收集账号与表单密码的数据
-let loginUserParam = reactive({username: "admin", password: "admin", code :'10086'})
+let loginUserParam = reactive({username: "admin", password: "admin", code :10086})
 
 let submitState = ref(false);
 
