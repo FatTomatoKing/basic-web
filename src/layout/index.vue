@@ -26,7 +26,7 @@ export default {
       <div class="layout_slider" :class="settingStore.fold ? 'foldState' : ''">
         <Logo></Logo>
         <el-scrollbar class="scroll_bar" >
-          <el-menu :default-active="$route.path" background-color="#001529" text-color="white">
+          <el-menu :collapse="settingStore.fold" :default-active="$route.path" background-color="#001529" text-color="white">
             <Menu :menuList="userStore.menuRoutes"></Menu>
           </el-menu>
         </el-scrollbar>
@@ -62,7 +62,6 @@ export default {
       .scroll_bar{
         width: 100%;
         height: calc(100vh - $base-logo-height);
-        transition: all 0.3s;  // 明确指定过渡属性
         .el-menu{
           border-right: none ;
         }
