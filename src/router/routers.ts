@@ -139,7 +139,7 @@ export const constantRoute = [
             },
             {
                 path:'/product/sku',
-                component: () => import('@/views/product/sku/index.vue'),
+                component: () => import('@/views/product/spu/index.vue'),
                 name:'Sku',
                 meta:{
                     title: "Spu管理",
@@ -149,7 +149,7 @@ export const constantRoute = [
             },
             {
                 path:'/product/spu',
-                component: () => import('@/views/product/spu/index.vue'),
+                component: () => import('@/views/product/sku/index.vue'),
                 name:'Spu',
                 meta:{
                     title: "Sku管理",

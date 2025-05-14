@@ -63,11 +63,9 @@
       position: absolute;
       top: $base-tabbar-height;
       left: $base-menu-width;
-      background: yellowgreen;
+      background: white;
       // 处理右下角div内容自适应
       overflow: auto;
     }
-
-
   }
 </style>

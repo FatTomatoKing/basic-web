@@ -10,14 +10,14 @@ import {ArrowDown} from "@element-plus/icons-vue";
   <img src="../../../../public/logo4.png" style="width: 24px; height: 24px; margin: 0 10px" alt="">
   <el-dropdown>
     <span class="el-dropdown-link">
-      admin
+       admin
       <el-icon class="el-icon--right">
-        <arrow-down/>
+        <arrow-down />
       </el-icon>
     </span>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item>退出登录</el-dropdown-item>
+        <el-dropdown-item>退出登陆</el-dropdown-item>
       </el-dropdown-menu>
     </template>
   </el-dropdown>
