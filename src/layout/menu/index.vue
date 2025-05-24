@@ -1,4 +1,4 @@
-<script setup lang="ts" >
+<script setup lang="ts" xmlns="http://www.w3.org/1999/html">
     defineProps(['menuList']);
 
     import {useRouter} from "vue-router"
@@ -21,6 +21,7 @@
 
 <template>
   <template v-for="(item) in menuList" :key="item.path">
+    <div>
       <template v-if="!item.children">
         <el-menu-item v-if="!item.meta.hidden" :index="item.path" :key="item.path" @click="goRoute">
           <template #title>
@@ -53,6 +54,7 @@
         </template>
         <Menu :menuList="item.children"></Menu>
       </el-sub-menu>
+    </div>
   </template>
 </template>
 

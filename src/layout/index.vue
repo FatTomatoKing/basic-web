@@ -26,7 +26,7 @@ export default {
       <div class="layout_slider" :class="settingStore.fold ? 'foldState' : ''">
         <Logo></Logo>
         <el-scrollbar class="scroll_bar" >
-          <el-menu :collapse="settingStore.fold" :default-active="$route.path" background-color="#001529" text-color="white">
+          <el-menu mode="vertical" :collapse="settingStore.fold" :default-active="$route.path" background-color="#001529" text-color="white">
             <Menu :menuList="userStore.menuRoutes"></Menu>
           </el-menu>
         </el-scrollbar>
