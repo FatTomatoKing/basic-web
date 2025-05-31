@@ -6,7 +6,8 @@ let useSetting = defineStore("Fold",{
 
     state: ()=>{
         return {
-            fold : ref(false)
+            fold : ref(false),
+            refresh: ref(true)
         };
     },
     actions: {

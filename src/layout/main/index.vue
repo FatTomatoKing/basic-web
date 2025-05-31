@@ -1,4 +1,17 @@
 <script setup lang="ts">
+  import useSetting from "@/store/modules/setting";
+  import {ref, watch} from "vue";
+  import {nextTick} from "vue";
+  let useSettingStore = useSetting();
+  let flag = ref(true)
+  watch(() => useSettingStore.refresh,()=>{
+    console.log(useSettingStore.refresh)
+    flag.value = false
+    nextTick(()=>{
+      flag.value = true
+    })
+  })
+
 
 </script>
 
@@ -12,7 +25,7 @@
 
   <router-view v-slot="{ Component }">
     <transition name="fade">
-      <component :is="Component" />
+      <component :is="Component" v-if="flag"/>
     </transition>
   </router-view>
 
