@@ -7,8 +7,13 @@
     let $router = useRouter()
 
     const goRoute = (vc: any)=>{
-      console.log(vc)
-      $router.push(vc.index)
+      if ($router) {
+        console.log("index" + vc.index)
+        $router.push(vc.index)
+      } else {
+        console.error('Router instance is not available');
+        console.error(vc);
+      }
     }
 
 </script>
@@ -45,7 +50,7 @@
       </template>
 
 
-      <el-sub-menu v-if="item.children && item.children.length>1" :index="item.path" :key="item.path" @click="goRoute">
+      <el-sub-menu v-if="item.children && item.children.length >1" :index="item.path" :key="item.path" @click="goRoute">
         <template #title>
           <el-icon>
             <component :is="item.meta.icon"></component>
