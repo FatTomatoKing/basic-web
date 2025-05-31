@@ -9,14 +9,28 @@ let useSettingStore = useSetting();
 
 const changeRefreshState = ()=>{
   useSettingStore.refresh = !useSettingStore.refresh;
-
 }
+
+const fullScreen = () => {
+  // 使用document 判断是否全屏幕
+  let fullscreenElement = document.fullscreenElement;
+  // 非全屏
+  if (!fullscreenElement) {
+    // 使用document 进行全屏
+    document.documentElement.requestFullscreen()
+  } else{
+    // 退出全屏
+    document.exitFullscreen()
+  }
+}
+
+
 
 </script>
 
 <template>
   <el-button size="small" icon="Refresh" @click="changeRefreshState" circle></el-button>
-  <el-button size="small" icon="FullScreen" circle></el-button>
+  <el-button size="small" icon="FullScreen" @click="fullScreen" circle></el-button>
   <el-button size="small" icon="Setting" circle></el-button>
   <img src="../../../../public/logo4.png" style="width: 24px; height: 24px; margin: 0 10px" alt="">
   <el-dropdown>
