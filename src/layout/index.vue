@@ -8,10 +8,20 @@
     // useRoute 和 useRouter 有什么区别
     import {useRoute} from "vue-router";
     import Tabbar from  '@/layout/tabbar/index.vue'
+    import {onMounted} from "vue";
+
 
     let userStore = useUserStore();
     let $route = useRoute();
     const settingStore = useSetting()
+
+    onMounted(() => {
+      // 如果token 存在
+      if (userStore.token){
+        // 触发获取用户信息
+        userStore.getUserInfo(userStore.token)
+      }
+    })
 
 </script>
 

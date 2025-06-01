@@ -12,57 +12,53 @@ export class LoginForm {
 
 
 
-class SysRole {
-    roleId: number
-    roleName: number
 
-    constructor(roleId: number, roleName: number) {
-        this.roleId = roleId;
-        this.roleName = roleName;
-    }
+// 响应结果类型
+export interface AuthResponse {
+    code: number;
+    permissions: string[];
+    roles: string[];
+    message: string;
+    user: UserInfo;
 }
 
-interface User {
-    id: number,
-    username: string,
-    nickname: string,
-    password: string,
-    twoFactorAuthKey: string,
-    created: string,
-    updated: string,
-    deptId: number,
-    parentId: number,
-    roleId: number,
-    userType: string,
-    email: string,
-    phonenumber: string,
-    sex: string,
-    avatar: string,
-    status: string,
-    delFlag: string,
-    loginIp: string,
-    loginDate: string,
-    pwdUpdateDate: string,
-    remark: string,
-    createBy: string,
-
-    salt: string,
-    desc: string,
-    roles: SysRole[],
-    roleIds: number[],
-    postIds: number[],
-    buttons: string[],
-    routers: string[],
-    token: string
+// 用户信息类型
+export interface UserInfo {
+    id: number;
+    username: string;
+    nickname: string;
+    twoFactorAuthKey: string;
+    created: number; // 时间戳格式
+    email: string;
+    phonenumber: string;
+    sex: string;
+    avatar: string;
+    status: string;
+    delFlag: string;
+    loginIp: string;
+    remark: string;
+    createBy: string;
+    dept: DeptInfo;
+    roles: RoleInfo[];
+    admin: boolean;
+    userId: number;
 }
 
+// 部门信息类型
+export interface DeptInfo {
+    children: any[]; // 如果子部门结构相同，可以改为 DeptInfo[]
+}
 
-export class UserResponseData {
-    code: number
-    data: User
-
-    constructor(code: number, data: User) {
-        this.code = code
-        this.data = data
-    }
+// 角色信息类型
+export interface RoleInfo {
+    roleId: number;
+    roleName: string;
+    roleKey: string;
+    roleSort: number;
+    dataScope: string;
+    menuCheckStrictly: boolean;
+    deptCheckStrictly: boolean;
+    status: string;
+    flag: boolean;
+    admin: boolean;
 }

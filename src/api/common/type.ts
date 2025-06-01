@@ -13,8 +13,8 @@ export class ResponseResult<T> {
     }
 
     // 判断是否成功
+    // 将箭头函数改为传统方法
     isSuccess(): boolean {
         return this.code === ResponseResult.SUCCESS_CODE;
     }
-
 }

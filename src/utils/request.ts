@@ -1,10 +1,23 @@
-
+7
 import axios from "axios";
 import {ElMessage} from "element-plus";
+import useUserStore from "@/store/modules/user";
+
+
 //创建axios实例
 let request = axios.create({
     baseURL: import.meta.env.VITE_GLOB_API_URL,
     timeout: 5000
+})
+
+
+request.interceptors.request.use((config) => {
+    let useStore = useUserStore();
+    if (useStore.token) {
+        config.headers.Authorization = useStore.token
+        console.log(config);
+    }
+    return config;
 })
 
 request.interceptors.response.use((response) => {
@@ -12,6 +25,7 @@ request.interceptors.response.use((response) => {
 }, (rejected) => {
     //处理网络错误
     let msg = '';
+    console.error(rejected);
     let status = rejected.response.status;
 
     switch (status) {
@@ -37,7 +51,7 @@ request.interceptors.response.use((response) => {
     return Promise.reject(rejected)
 })
 
-export { request }
+export {request}
 
 
 
