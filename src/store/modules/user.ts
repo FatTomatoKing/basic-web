@@ -28,23 +28,33 @@ let useUserStore = defineStore("User", {
                 SET_TOKEN(this.token)
                 return "Ok"
             } else {
-                return Promise.reject("kk")
+                return Promise.reject("登陆失败")
             }
         },
-        async getUserInfo(token: string) {
-            let userResponseData = await getUserInfo(token);
+        async getUserInfo() {
+            let userResponseData = await getUserInfo();
             if (userResponseData.code == 200) {
                 this.username = userResponseData.user.username
                 this.avatar = userResponseData.user.avatar
-                console.log("获取到的用户名称" + this.username)
+                return "ok"
+            } else {
+                return Promise.reject(userResponseData.message)
             }
         },
         async logout() {
             let logoutResult = await logout()
+            console.log(logoutResult)
             if (logoutResult.code == ResponseResult.SUCCESS_CODE) {
-                this.username="";
+                console.log("退出登录成功")
+                this.token = "";
+                this.username = "";
                 this.avatar = "";
-                REMOVE_TOKEN
+                REMOVE_TOKEN()
+                console.log(GET_TOKEN())
+                return "Ok"
+            } else {
+                console.log("退出登录失败")
+                return Promise.reject(logoutResult.message)
             }
         }
     },

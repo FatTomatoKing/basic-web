@@ -1,6 +1,6 @@
 
 export default {
-    title : '豪宅基地',
+    title : 'BASE-ADMIN',
     logo: '/logo4.png',
     logoHidden: true,
 }

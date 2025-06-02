@@ -28,12 +28,12 @@ const fullScreen = () => {
   }
 }
 // 退出登陆函数
-const logout = () => {
+const logout = async () => {
   // 清除token
-  userStore.logout();
+  await userStore.logout();
   // 路由重定向到登陆页面
   let redirectPath = $route.path;
-  console.log(redirectPath);
+  console.log("退出登录" + redirectPath);
   $router.push({path:"/login", query: {redirect: redirectPath}});
 }
 

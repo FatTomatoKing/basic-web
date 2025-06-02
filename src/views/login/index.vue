@@ -6,7 +6,7 @@
       <el-col :span="12" :xs="24">
         <el-form class="login-form" :model="loginUserParam" :rules="loginUserParamCheckRules" ref="validateResult">
           <h1>Hello</h1>
-          <h2>欢迎来到豪宅基地</h2>
+          <h2>欢迎来到{{setting.title}}</h2>
           <el-form-item prop = "username">
             <el-input :prefix-icon="User" v-model="loginUserParam.username"></el-input>
           </el-form-item>
@@ -31,6 +31,7 @@ import {ref,reactive} from "vue";
 import {useRouter,useRoute} from "vue-router";
 import {ElNotification} from "element-plus";
 import {getHour} from "@/utils/time.js";
+import setting from "@/setting";
 
 
 //收集账号与表单密码的数据
