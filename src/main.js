@@ -11,6 +11,7 @@ import pinia  from "@/store/index.js";
 import "@/styles/index.scss";
 import 'virtual:svg-icons-register'
 import 'element-plus/dist/index.css'
+import './permission.js'
 
 var app = createApp(App);
 
