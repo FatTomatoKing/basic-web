@@ -28,7 +28,7 @@ import {User, Lock} from '@element-plus/icons-vue'
 //这里不使用｛｝的原因是使用了默认暴露
 import useUserStore from '@/store/modules/user.js'
 import {ref,reactive} from "vue";
-import {useRouter} from "vue-router";
+import {useRouter,useRoute} from "vue-router";
 import {ElNotification} from "element-plus";
 import {getHour} from "@/utils/time.js";
 
@@ -43,6 +43,7 @@ let validateResult = ref()
 
 let userStore = useUserStore();
 let $router = useRouter();
+let $route = useRoute();
 async function login() {
   console.log("点击了提交按钮")
   try {
@@ -52,7 +53,13 @@ async function login() {
     submitState.value = true
     await userStore.userLogin(loginUserParam);
     submitState.value = false
-    $router.push("/");
+    let redirect = $route.query.redirect;
+    console.log(redirect)
+    if (redirect) {
+      $router.push(redirect);
+    } else{
+      $router.push("/");
+    }
     ElNotification({
       type: "success",
       message: `Hi, ${getHour()}`

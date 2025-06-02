@@ -3,13 +3,15 @@
 import {ArrowDown} from "@element-plus/icons-vue";
 import useSetting from "@/store/modules/setting";
 import useUserStore from "@/store/modules/user";
+import {useRouter, useRoute} from"vue-router"
+import path from "path";
 
 let useSettingStore = useSetting();
 let userStore = useUserStore();
+let $router = useRouter();
+let $route = useRoute();
 
-
-
-const changeRefreshState = ()=>{
+const changeRefreshState = () => {
   useSettingStore.refresh = !useSettingStore.refresh;
 }
 
@@ -20,12 +22,20 @@ const fullScreen = () => {
   if (!fullscreenElement) {
     // 使用document 进行全屏
     document.documentElement.requestFullscreen()
-  } else{
+  } else {
     // 退出全屏
     document.exitFullscreen()
   }
 }
-
+// 退出登陆函数
+const logout = () => {
+  // 清除token
+  userStore.logout();
+  // 路由重定向到登陆页面
+  let redirectPath = $route.path;
+  console.log(redirectPath);
+  $router.push({path:"/login", query: {redirect: redirectPath}});
+}
 
 
 </script>
@@ -34,17 +44,17 @@ const fullScreen = () => {
   <el-button size="small" icon="Refresh" @click="changeRefreshState" circle></el-button>
   <el-button size="small" icon="FullScreen" @click="fullScreen" circle></el-button>
   <el-button size="small" icon="Setting" circle></el-button>
-  <img :src="userStore.avatar" style="width: 24px; height: 24px; margin: 0 10px" alt="">
+  <img :src="userStore.avatar" style="width: 24px; height: 24px; margin: 0 10px; border-radius: 50%" alt="">
   <el-dropdown>
     <span class="el-dropdown-link">
-      {{userStore.username}}
+      {{ userStore.username }}
       <el-icon class="el-icon--right">
-        <arrow-down />
+        <arrow-down/>
       </el-icon>
     </span>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item>退出登陆</el-dropdown-item>
+        <el-dropdown-item @click="logout">退出登陆</el-dropdown-item>
       </el-dropdown-menu>
     </template>
   </el-dropdown>
