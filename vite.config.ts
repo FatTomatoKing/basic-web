@@ -32,6 +32,7 @@ export default defineConfig(({ mode }) => {
         // 使用类型断言确保 proxyConfig 可以使用字符串索引
         (proxyConfig as Record<string, {
           target: string;
+          // 是否允许跨域请求
           changeOrigin: boolean;
         }>)[prefix] = {
           target,
