@@ -1,4 +1,4 @@
-7
+import {ResponseResult} from "@/api/common/type";
 import axios from "axios";
 import {ElMessage} from "element-plus";
 import useUserStore from "@/store/modules/user";
@@ -21,7 +21,14 @@ request.interceptors.request.use((config) => {
 })
 
 request.interceptors.response.use((response) => {
-    return response.data;
+    // 假设后端返回的数据结构为 { code, data, message }
+    if (isResponseResult(response.data)){
+        const {code, message, data} = response.data;
+        // 返回 ResponseResult 实例
+        return new ResponseResult(code, message, data);
+    } else{
+        return response.data;
+    }
 }, (rejected) => {
     //处理网络错误
     let msg = '';
@@ -51,6 +58,16 @@ request.interceptors.response.use((response) => {
     return Promise.reject(rejected)
 })
 
+
+function isResponseResult(obj: any): obj is { code: number; data: any; message: string } {
+    return (
+        obj &&
+        typeof obj === 'object' &&
+        typeof obj.code === 'number' &&
+        'data' in obj &&
+        typeof obj.message === 'string'
+    );
+}
 export {request}
 
 
