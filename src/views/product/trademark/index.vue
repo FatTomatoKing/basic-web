@@ -34,7 +34,13 @@ onMounted(async () => {
         </template>
       </el-table-column>
       <el-table-column label="品牌Logo" prop="logoUrl"></el-table-column>
-      <el-table-column label="品牌操作"></el-table-column>
+      <el-table-column label="品牌操作" >
+        <!--具名插槽，父组件使用 v-slot 或者 # 来接受子组件的传递值        -->
+        <template #="{ row, column, $index }">
+          <el-button type="primary" size="small" icon="Edit"></el-button>
+          <el-button type="primary" size="small" icon="Delete"></el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
 
