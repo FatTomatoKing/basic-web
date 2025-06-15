@@ -19,11 +19,11 @@ export class ResponseResult<T> {
 }
 
 export class PageParam {
-    public pageNum: number
+    public pageNo: number
     public pageSize: number
 
-    constructor(pageNum: string, pageSize: string) {
-        this.pageNum = pageNum
+    constructor(pageNo: string, pageSize: string) {
+        this.pageNo = pageNo
         this.pageSize = pageSize
     }
 }

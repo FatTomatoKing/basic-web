@@ -13,7 +13,7 @@ export class BrandEntity {
         this.logoUrl = logoUrl;
     }
 
-    private id: number
-    private tmName: string
-    private logoUrl: string
+    public id: number
+    public tmName: string
+    public logoUrl: string
 }
