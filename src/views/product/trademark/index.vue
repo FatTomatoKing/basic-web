@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {ref, onMounted, reactive, watch} from "vue"
-import {editBrand, listPage, saveBrand} from "@/api/brand"
+import {deleteBrand, editBrand, getBrandById, listPage, saveBrand} from "@/api/brand"
 import {BrandEntity, BrandForm} from "@/api/brand/type";
 import {PageResult, ResponseResult} from "@/api/common/type";
 import { ElMessage } from 'element-plus'
@@ -46,15 +46,55 @@ const getListPage = async ()=>{
 const save = ()=>{
   dialogFormVisible.value = true
 }
-const edit = () => {
+const updateTradeMark  =async (row: BrandEntity) => {
+  let id = row.id;
+  let result = await getBrandById(id)
+  if (result.isSuccess()){
+    let data = result.data;
+    brandEntity.id = data.id
+    brandEntity.tmName = data.tmName
+    brandEntity.logoUrl = data.logoUrl;
+  }
   dialogFormVisible.value = true
 }
 const cancel = ()=>{
   dialogFormVisible.value = false
 }
+
+const deleteTradeMark = async (row: BrandEntity) => {
+  let id = row.id;
+  let result = await deleteBrand(id)
+  if (result.isSuccess()){
+    ElMessage({
+      type: "success",
+      message: "删除品牌成功"
+    })
+  }else{
+    ElMessage({
+      type: "error",
+      message: "删除品牌失败"
+    })
+  }
+  await getListPage()
+}
+
 const confirm = async ()=>{
   if (brandEntity.id){
     const result = await editBrand(brandEntity)
+    if (result.isSuccess()){
+      dialogFormVisible.value = false
+      ElMessage({
+        type: "success",
+        message: "编辑品牌成功"
+      })
+      await getListPage()
+    }else {
+      ElMessage({
+        type: "error",
+        message: "编辑品牌失败"
+      })
+    }
+
   } else{
    const result = await saveBrand(brandEntity)
    if (result.isSuccess()){
@@ -117,8 +157,8 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile) => 
         <el-table-column label="品牌操作" >
           <!--具名插槽，父组件使用 v-slot 或者 # 来接受子组件的传递值        -->
           <template #="{ row, column, $index }">
-            <el-button type="primary" size="small" icon="Edit" @click="edit"></el-button>
-            <el-button type="primary" size="small" icon="Delete"></el-button>
+            <el-button type="primary" size="small" icon="Edit" @click="$event =>updateTradeMark(row)"></el-button>
+            <el-button type="primary" size="small" icon="Delete" @click="$event =>deleteTradeMark(row)"></el-button>
           </template>
         </el-table-column>
       </el-table>
