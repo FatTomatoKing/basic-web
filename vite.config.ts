@@ -56,7 +56,7 @@ export default defineConfig(({ mode }) => {
       // 允许局域网访问
       host: true,
       // 设置端口号，默认为5174
-      port: Number(VITE_PORT) || 5174,
+      port: Number(VITE_PORT) || 5175,
       // 使用创建的代理配置
       proxy: createProxyConfig()
     },

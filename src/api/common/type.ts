@@ -22,7 +22,7 @@ export class PageParam {
     public pageNo: number
     public pageSize: number
 
-    constructor(pageNo: string, pageSize: string) {
+    constructor(pageNo: number, pageSize: number) {
         this.pageNo = pageNo
         this.pageSize = pageSize
     }

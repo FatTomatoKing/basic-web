@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.5",
+    "@types/nprogress": "^0.2.3",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/tsconfig": "^0.7.0",
     "sass": "^1.87.0",

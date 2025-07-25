@@ -161,5 +161,29 @@ export const constantRoute = [
             }
         ]
 
+    },
+    {
+        path: '/resource',
+        name: 'Resource',
+        component: () => import('@/layout/index.vue'),
+        meta:{
+            title: "资源管理",
+            hidden: false,
+            icon: "Goods"
+        },
+        redirect: "/resource/account",
+        children: [
+            {
+                path:'/resource/account',
+                component: () => import('@/views/resource/account/index.vue'),
+                name:'account',
+                meta:{
+                    title: "账号管理",
+                    hidden: false,
+                    icon: "Trophy"
+                }
+            }
+        ]
+
     }
 ]

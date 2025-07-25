@@ -3,9 +3,9 @@ import {ref, onMounted, reactive, watch} from "vue"
 import {deleteBrand, editBrand, getBrandById, listPage, saveBrand} from "@/api/brand"
 import {BrandEntity, BrandForm} from "@/api/brand/type";
 import {PageResult, ResponseResult} from "@/api/common/type";
-import { ElMessage } from 'element-plus'
-import { Plus } from '@element-plus/icons-vue'
-import type { UploadProps } from 'element-plus'
+import {ElMessage} from 'element-plus'
+import {Plus} from '@element-plus/icons-vue'
+import type {UploadProps} from 'element-plus'
 
 
 let pageNo = ref<number>(1)
@@ -14,7 +14,6 @@ let total = ref<number>(1024)
 let dialogFormVisible = ref(false);
 const brandList = ref<BrandEntity[]>([]);
 let brandEntity = reactive<BrandEntity>(new BrandEntity())
-
 
 
 onMounted(() => {
@@ -33,23 +32,22 @@ watch(dialogFormVisible, (newValue) => {
   console.log(newValue);
 });
 
-const getListPage = async ()=>{
+const getListPage = async () => {
   const brandForm = new BrandForm(pageNo.value, limit.value);
 
   const result: ResponseResult<PageResult<BrandEntity>> = await listPage(brandForm);  // 处理返回结果
-  if (result.isSuccess()){
+  if (result.isSuccess()) {
     brandList.value = result.data.list
     total.value = result.data.total
   }
-  console.log(result);
 }
-const save = ()=>{
+const save = () => {
   dialogFormVisible.value = true
 }
-const updateTradeMark  =async (row: BrandEntity) => {
+const updateTradeMark = async (row: BrandEntity) => {
   let id = row.id;
   let result = await getBrandById(id)
-  if (result.isSuccess()){
+  if (result.isSuccess()) {
     let data = result.data;
     brandEntity.id = data.id
     brandEntity.tmName = data.tmName
@@ -57,19 +55,19 @@ const updateTradeMark  =async (row: BrandEntity) => {
   }
   dialogFormVisible.value = true
 }
-const cancel = ()=>{
+const cancel = () => {
   dialogFormVisible.value = false
 }
 
 const deleteTradeMark = async (row: BrandEntity) => {
   let id = row.id;
   let result = await deleteBrand(id)
-  if (result.isSuccess()){
+  if (result.isSuccess()) {
     ElMessage({
       type: "success",
       message: "删除品牌成功"
     })
-  }else{
+  } else {
     ElMessage({
       type: "error",
       message: "删除品牌失败"
@@ -78,38 +76,38 @@ const deleteTradeMark = async (row: BrandEntity) => {
   await getListPage()
 }
 
-const confirm = async ()=>{
-  if (brandEntity.id){
+const confirm = async () => {
+  if (brandEntity.id) {
     const result = await editBrand(brandEntity)
-    if (result.isSuccess()){
+    if (result.isSuccess()) {
       dialogFormVisible.value = false
       ElMessage({
         type: "success",
         message: "编辑品牌成功"
       })
       await getListPage()
-    }else {
+    } else {
       ElMessage({
         type: "error",
         message: "编辑品牌失败"
       })
     }
 
-  } else{
-   const result = await saveBrand(brandEntity)
-   if (result.isSuccess()){
-     dialogFormVisible.value = false
-     ElMessage({
-       type: "success",
-       message: "添加品牌成功"
-     })
-     await getListPage()
-   } else {
-     ElMessage({
-       type: "error",
-       message: "添加品牌失败"
-     })
-   }
+  } else {
+    const result = await saveBrand(brandEntity)
+    if (result.isSuccess()) {
+      dialogFormVisible.value = false
+      ElMessage({
+        type: "success",
+        message: "添加品牌成功"
+      })
+      await getListPage()
+    } else {
+      ElMessage({
+        type: "error",
+        message: "添加品牌失败"
+      })
+    }
   }
 
 }
@@ -126,11 +124,9 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 }
 
 
-
-
 const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile) => {
   console.log(response)
-  brandEntity.logoUrl= response.data
+  brandEntity.logoUrl = response.data
   console.log(brandEntity)
 }
 
@@ -149,12 +145,12 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile) => 
             <h1>{{ row.tmName }}</h1>
           </template>
         </el-table-column>
-        <el-table-column label="品牌Logo" >
+        <el-table-column label="品牌Logo">
           <template #="{ row, column, $index }">
             <img v-if="row.logoUrl" :src="row.logoUrl" style="width: 100px; height: 100px"/>
           </template>
         </el-table-column>
-        <el-table-column label="品牌操作" >
+        <el-table-column label="品牌操作">
           <!--具名插槽，父组件使用 v-slot 或者 # 来接受子组件的传递值        -->
           <template #="{ row, column, $index }">
             <el-button type="primary" size="small" icon="Edit" @click="$event =>updateTradeMark(row)"></el-button>
@@ -185,8 +181,10 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile) => 
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
           >
-            <img v-if="brandEntity.logoUrl" :src="brandEntity.logoUrl" class="avatar" />
-            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+            <img v-if="brandEntity.logoUrl" :src="brandEntity.logoUrl" class="avatar"/>
+            <el-icon v-else class="avatar-uploader-icon">
+              <Plus/>
+            </el-icon>
           </el-upload>
         </el-form-item>
       </el-form>
@@ -196,7 +194,6 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile) => 
       </template>
     </el-dialog>
   </div>
-
 
 
 </template>
