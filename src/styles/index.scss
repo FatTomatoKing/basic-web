@@ -14,3 +14,17 @@
   background: yellowgreen;
   border-radius: 10px;
 }
+
+body {
+  /*
+   * 这是一个现代的系统UI字体栈。
+   * 它会告诉浏览器按顺序使用以下字体：
+   * -apple-system: 苹果设备 (macOS, iOS) 上的 San Francisco 字体。
+   * BlinkMacSystemFont: Chrome 浏览器在 macOS 上的备用。
+   * 'Segoe UI': Windows 系统上的首选字体。
+   * Roboto: Android 和 Chrome OS 上的字体。
+   * 'Helvetica Neue', Arial: 经典、通用的无衬线字体。
+   * sans-serif: 最后的备选，使用浏览器默认的无衬线字体。
+   */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
