@@ -105,6 +105,39 @@ const cancel = () => {
   dialogFormVisible.value = false
 }
 
+// 截断URL显示
+const truncateUrl = (url: string) => {
+  if (!url) return '';
+  return url.length > 20 ? url.substring(0, 20) + '...' : url;
+}
+
+// 复制文本到剪贴板
+const copyText = (text: string) => {
+  navigator.clipboard.writeText(text)
+      .then(() => {
+        ElMessage({
+          type: 'success',
+          message: '复制成功'
+        })
+      })
+      .catch(() => {
+        ElMessage({
+          type: 'error',
+          message: '复制失败'
+        })
+      })
+}
+
+// 打开链接
+const openUrl = (url: string) => {
+  window.open(url, '_blank');
+}
+
+const truncateDesc = (url: string) => {
+  if (!url) return '';
+  return url.length > 20 ? url.substring(0, 20) + '...' : url;
+}
+
 </script>
 
 <template>
@@ -114,10 +147,32 @@ const cancel = () => {
       <el-table :data="accountList">
         <el-table-column label="序号" width="80px" align="center" type="index"></el-table-column>
         <el-table-column label="环境名称" prop="envName"></el-table-column>
-        <el-table-column label="网址" prop="website"></el-table-column>
-        <el-table-column label="账号" prop="username"></el-table-column>
-        <el-table-column label="密码" prop="password"></el-table-column>
-        <el-table-column label="描述" prop="description"></el-table-column>
+        <el-table-column label="网址" min-width="80px">
+          <template #default="scope">
+            <div class="url-container">
+              <el-tooltip :content="scope.row.website" placement="top" effect="light">
+                <span class="truncated-url">{{ truncateUrl(scope.row.website) }}</span>
+              </el-tooltip>
+              <el-button type="primary" link @click="openUrl(scope.row.website)" class="action-btn">
+                <el-icon>
+                  <Link/>
+                </el-icon>
+              </el-button>
+              <el-button type="primary" link @click="copyText(scope.row.website)" class="action-btn">
+                <el-icon>
+                  <Document/>
+                </el-icon>
+              </el-button>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="账号" prop="username" min-width="30px"></el-table-column>
+        <el-table-column label="密码" prop="password" min-width="30px"></el-table-column>
+        <el-table-column label="描述">
+          <template #default="scope">
+            {{ truncateDesc(scope.row.description) }}
+          </template>
+        </el-table-column>
         <el-table-column label="账号操作">
           <!--具名插槽，父组件使用 v-slot 或者 # 来接受子组件的传递值        -->
           <template #="{ row, column, $index }">
