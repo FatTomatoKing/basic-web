@@ -130,6 +130,15 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile) => 
   console.log(brandEntity)
 }
 
+const checkRules = {
+  tmName: [{
+    required: true,
+    message: 'Please input brand name',
+    trigger: 'blur',
+  }],
+  logo: {}
+}
+
 </script>
 
 <template>
@@ -168,12 +177,12 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile) => 
           @current-change="getListPage"
       />
     </el-card>
-    <el-dialog v-model="dialogFormVisible" title="添加品牌" width="600">
-      <el-form label-width="auto">
-        <el-form-item label="品牌名称" style="width: 80%;">
+    <el-dialog v-model="dialogFormVisible" title="添加品牌" width="600" >
+      <el-form label-width="auto" :model="brandEntity" :rules="checkRules">
+        <el-form-item label="品牌名称" style="width: 80%;" prop="tmName">
           <el-input placeholder="请输入品牌名称" v-model="brandEntity.tmName"></el-input>
         </el-form-item>
-        <el-form-item label="上传品牌Logo">
+        <el-form-item label="上传品牌Logo" prop="logoUrl">
           <el-upload
               class="avatar-uploader"
               action="/prod-api/upload/file"
